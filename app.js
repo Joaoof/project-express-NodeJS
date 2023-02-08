@@ -6,7 +6,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const admin = require('./routes/admin') // pra poder passa as rotas eu tive que criar essa variavel
 const path = require('path')
-//const mongoose = require('mongoose')
+const mongoose = require('mongoose')
 
 // * Configurações
 
@@ -21,6 +21,12 @@ app.engine('handlebars', handlebars.engine({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
 
 // Configurando mongoose
+mongoose.Promise = global.Promise
+mongoose.connect('mongodb://localhost/blogApp').then(() => {
+    console.log("Conectado ao mongo")
+}).catch((error) => {
+    console.log("erro ao se conectar: " +error)
+})
 
 // Em breve
 
