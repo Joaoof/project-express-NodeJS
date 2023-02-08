@@ -7,8 +7,24 @@ const app = express()
 const admin = require('./routes/admin') // pra poder passa as rotas eu tive que criar essa variavel
 const path = require('path')
 const mongoose = require('mongoose')
+const session = require('express-session')
+const flash = require("connect-flash")
 
 // * Configurações
+    // Sessão
+    app.use(session({
+        secret: "cursodenode",
+        resave: true,
+        saveUninitialized: true
+    }))
+
+    app.use(flash())
+// Middleware -- Configurando 
+
+    app.use((req, res, next) => {
+        res.locals.sucess_msg = req.flash("success_msg")
+        res.locals.error_msg = req.flash("error_msg")
+    })
 
 // Configurando Body-Parser
 
@@ -33,7 +49,6 @@ mongoose.connect('mongodb://localhost/blogApp').then(() => {
 // Public - Arquivos estáticos.
 
 app.use(express.static(path.join(__dirname + "/public")))
-
 
 // ! Rotas
 
