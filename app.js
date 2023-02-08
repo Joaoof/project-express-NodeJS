@@ -4,6 +4,7 @@ const express = require('express')
 const handlebars = require('express-handlebars')
 const bodyParser = require('body-parser')
 const app = express()
+const admin = require('./routes/admin') // pra poder passa as rotas eu tive que criar essa variavel
 //const mongoose = require('mongoose')
 
 // * Configurações
@@ -15,7 +16,7 @@ app.use(express.json())
 
 // Configurando Handlebars
 
-app.engine('handlebars', handlebars({defaultLayout: 'main'}))
+app.engine('handlebars', handlebars.engine({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
 
 // Configurando mongoose
@@ -24,6 +25,16 @@ app.set('view engine', 'handlebars')
 
 
 // ! Rotas
+
+app.get('/', (req, res) => {
+    res.send('Rota principal')
+})
+
+app.get('/posts', (req, res) => {
+    res.send('Lista de posts')
+})
+
+app.use('/admin', admin) // caso eu queira acessar as rotas, devo eu colocar o prefixo 'admin'
 
 // Outros
 const PORT = 8082 // Variavel da porta
