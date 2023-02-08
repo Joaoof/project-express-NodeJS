@@ -6,7 +6,7 @@ const routes = express.Router() // o routes vai receber o express.Router()
 // Rota principal painel Admin.
 
 routes.get('/', (req, res) => {
-    res.send('Página principal do painel ADM')
+    res.render('admin/index')
 })
 
 // Rota que vai listar posts

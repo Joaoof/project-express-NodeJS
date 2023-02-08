@@ -5,6 +5,7 @@ const handlebars = require('express-handlebars')
 const bodyParser = require('body-parser')
 const app = express()
 const admin = require('./routes/admin') // pra poder passa as rotas eu tive que criar essa variavel
+const path = require('path')
 //const mongoose = require('mongoose')
 
 // * Configurações
@@ -22,6 +23,10 @@ app.set('view engine', 'handlebars')
 // Configurando mongoose
 
 // Em breve
+
+// Public - Arquivos estáticos.
+
+app.use(express.static(path.join(__dirname + "/public")))
 
 
 // ! Rotas
