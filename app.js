@@ -15,15 +15,17 @@ const flash = require("connect-flash")
     app.use(session({
         secret: "cursodenode",
         resave: true,
-        saveUninitialized: true
+        saveUninitialized: true,
+        // cookie: {secure: true}
     }))
 
     app.use(flash())
 // Middleware -- Configurando 
 
     app.use((req, res, next) => {
-        res.locals.sucess_msg = req.flash("success_msg")
-        res.locals.error_msg = req.flash("error_msg")
+        res.locals.success_msg = req.flash('success_msg') // var global - Posso acessar  em qualquer parte da minha aplicação
+        res.locals.error_msg = req.flash('error_msg') // var global
+        next()
     })
 
 // Configurando Body-Parser
