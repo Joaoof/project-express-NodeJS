@@ -20,7 +20,12 @@ routes.get('/posts', (req, res) => {
 // Rota de categorias
 
 routes.get('/category', (req, res) => {
-    res.render('admin/categorias')
+    Categoria.find().sort({date: 'desc'}).lean().then((categorias) => { // Vai listar todas as categorias existentes! 'find()'
+        res.render('admin/categorias', {categorias: categorias})
+    }).catch((error) => {
+        req.flash("error_msg", "Houver um erro ao listar as categorias")
+        res.redirect("/admin")
+    }) 
 })
 
 routes.get('/categorias/add', (req, res) => {

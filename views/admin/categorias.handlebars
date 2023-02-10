@@ -1,3 +1,17 @@
-<h2>Lista de Categorias:</h2>
+<h2 style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">Lista de Categorias:</h2>
 <hr>
 <a href="/admin/categorias/add"><button class="btn btn-success">Nova categoria</button></a>
+
+{{#each categorias}}
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h3 style="font-family: 'Courier New', Courier, monospace;">{{nome}}</h3>
+            <small style="font-size: 1rem;">{{slug}}</small>
+            <small style="color: rgb(255, 0, 0);"><p style="font-family: fantasy; font-size: 1rem">de criação: {{date}}</p></small>
+        </div>
+    </div>
+
+{{else}}
+
+{{/each}}
