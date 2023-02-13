@@ -1,5 +1,6 @@
 // ! Aqui serão guardadas as rotas de Admin.
 
+const { Router } = require('express');
 const express = require('express'); // vou chamar o express.
 const routes = express.Router(); // o routes vai receber o express.Router()
 const mongoose = require('mongoose');;
@@ -108,6 +109,19 @@ routes.post("/categorias/deletar", (req, res) => {
         req.flash('error_msg', 'Erro ao deletar categoria')
         res.redirect("/admin/category")
 })
+})
+
+routes.get("/postagens", (req, res) => {
+    res.render("admin/postagens")
+})
+
+routes.get("/postagens/add", (req, res) => {
+    Categoria.find().lean(true).then((categoria) => { // Vai passar todas as categorias em view. ou seja tudo!
+        res.render("admin/addpostagem", {categoria: categoria})
+    }).catch((error) => {
+        req.flash('error_msg', 'Houve um erro ao carregar o formulário')
+        res.redirect("/admin")
+    })
 })
 
 module.exports = routes; // vou exportar as rotas
