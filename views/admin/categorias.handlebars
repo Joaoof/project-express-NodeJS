@@ -8,7 +8,12 @@
         <div class="card-body">
             <h3 style="font-family: 'Courier New', Courier, monospace;">{{nome}}</h3>
             <small style="font-size: 1rem;">{{slug}}</small>
-            <small style="color: rgb(255, 0, 0);"><p style="font-family: fantasy; font-size: 1rem">de criação: {{date}}</p></small>
+            <small style="color: rgb(255, 0, 0);"><p style="font-family: fantasy; font-size: 1rem"> Data de criação: {{date}}</p></small>
+           <a href="/admin/categorias/edit/{{_id}}"><button class="btn btn-success">Editar categoria</button></a>
+           <form action="/admin/categorias/deletar" method="POST">
+            <input type="hidden" name="id" value="{{_id}}">
+            <button type="submit" class="btn btn-danger mt-3">Deletar categoria</button>
+           </form>
         </div>
     </div>
 
