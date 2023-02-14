@@ -6,6 +6,9 @@ const routes = express.Router(); // o routes vai receber o express.Router()
 const mongoose = require('mongoose');;
 require('../models/Categoria') // a gente vai pegar o mdel, com o Categoria dentro
 const Categoria = mongoose.model("categorias");
+require('../models/Posts')// Vamos pegar o Post dentro do diretorio model.
+const Posts = mongoose.model("postagens")
+
 // Rota principal painel Admin.
 
 routes.get('/', (req, res) => {
@@ -123,5 +126,46 @@ routes.get("/postagens/add", (req, res) => {
         res.redirect("/admin")
     })
 })
+
+// Adicionando categorias ao banco de dados
+
+routes.post("/postagens/nova", (req, res) => {
+    
+
+    var error = [];
+
+    if(req.body.categoria == '0') {
+        error.push({texto: "Informe a categoria"})
+    }
+
+    
+    if (error.length > 0){
+        Categoria.find().lean().then((categoria)=>{
+            res.render("admin/addpostagem", {error: error,categoria: categoria})
+        }).catch((error)=>{
+            res.flash("error_msg","Houve um error ao carregar formulário")
+            res.redirect("/admin")
+        })
+    }else {
+        const novaPostagem = {
+            titulo: req.body.titulo,
+            descricao: req.body.descricao,
+            conteudo: req.body.conteudo,
+            categoria: req.body.categoria,
+            slug: req.body.slug
+        
+        
+    }
+    
+            new Posts(novaPostagem).save().then(() => {
+                req.flash('success_msg', 'Postagem criada com sucesso')
+                res.redirect("/admin/postagens")
+            }).catch((error) => {
+                req.flash('error_msg', 'erro ao criar postagem' + error)
+                res.redirect("/admin/postagens")
+        })
+    }
+
+    })
 
 module.exports = routes; // vou exportar as rotas
