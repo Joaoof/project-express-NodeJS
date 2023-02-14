@@ -115,7 +115,14 @@ routes.post("/categorias/deletar", (req, res) => {
 })
 
 routes.get("/postagens", (req, res) => {
-    res.render("admin/postagens")
+
+    Posts.find().populate("categoria").lean().sort({data: 'desc'}).then((postagens) => {
+        res.render("admin/postagens", {postagens: postagens})
+    }).catch((error) => {
+        req.flash('error_msg', 'Houve um erro ao listar as postagens')
+        res.redirect('/admin')
+    })
+
 })
 
 routes.get("/postagens/add", (req, res) => {
