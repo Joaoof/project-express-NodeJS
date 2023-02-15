@@ -1,7 +1,10 @@
 // Carregando módulos
 
 const express = require('express')
-const handlebars = require('express-handlebars')
+const exphbs = require('express-handlebars');
+const Handlebars = require('handlebars');
+const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
+
 const bodyParser = require('body-parser')
 const app = express()
 const admin = require('./routes/admin') // pra poder passa as rotas eu tive que criar essa variavel
@@ -35,8 +38,16 @@ app.use(express.json())
 
 // Configurando Handlebars
 
-app.engine('handlebars', handlebars.engine({defaultLayout: 'main'}))
-app.set('view engine', 'handlebars')
+const hbs = exphbs.create({
+    defaultLayout: 'main', 
+    extname: 'handlebars',
+    handlebars: allowInsecurePrototypeAccess(Handlebars)
+  });
+
+
+  app.engine('handlebars', hbs.engine); 
+  app.set('view engine', 'handlebars');
+  app.set('views', 'views');
 
 // Configurando mongoose
 mongoose.Promise = global.Promise
