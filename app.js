@@ -14,6 +14,8 @@ const session = require('express-session')
 const flash = require("connect-flash")
 require("./models/Posts")
 const Posts = mongoose.model("postagens")
+require("./models/Categoria") // A gente vai recarregar o model de categoria aqui
+const Categoria = mongoose.model("categorias")
 
 // * Configurações
     // Sessão
@@ -92,12 +94,41 @@ app.get("/postagem/:slug", (req, res) => {
     })
 })
 
-app.get("/404", (req, res) => {
-        res.send("Not Found 404")
+app.get("/categorias", (req, res) => {
+    Categoria.find().then((categoria) => {
+        res.render("categorias/index", {categoria: categoria})
+    }).catch((error) => {
+        req.flash("error_msg", "Houve um erro interno ao listar as categorias")
+        res.redirect("/")
+    })
 })
 
-app.get('/posts', (req, res) => {
-    res.send('Lista de posts')
+app.get("/categorias/:slug", (req, res) => {
+    Categoria.findOne({slug: req.params.slug}).then((categoria) => {
+        if(categoria) {
+
+            Posts.find({categoria: categoria._id}).then((postagens) => {
+
+                res.render("categorias/postagens", {postagens: postagens, categoria: categoria})
+
+            }).catch((error) => {
+                req.flash("error_msg", "Houve um erro ao listar os posts")
+                res.redirect("/")
+            })
+
+        } else {
+            req.flash("error_msg", "Esta categoria não existe")
+            res.redirect("/")
+        }
+
+    }).catch((error) => {
+        req.flash("error_msg", "Houve um erro interno ao carregar a pagina desta categoria")
+        res.redirect("/")
+    })
+})
+
+app.get("/404", (req, res) => {
+    res.send("Not Found 404")
 })
 
 app.use('/admin', admin) // caso eu queira acessar as rotas, devo eu colocar o prefixo 'admin'
