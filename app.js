@@ -78,9 +78,23 @@ app.get('/', (req, res) => {
 
 })
 
-    app.get("/404", (req, res) => {
-        res.send("Not Found 404")
+app.get("/postagem/:slug", (req, res) => {
+    Posts.findOne({slug: req.params.slug}).then((postagem) => {
+        if(postagem) {
+            res.render("postagem/index", {postagem: postagem})
+        } else {
+            req.flash("error_msg", "Esta postagem não existe")
+            res.redirect("/")
+        }
+    }).catch((error) => {
+        req.flash("error_msg", "Houve um erro interno")
+        res.redirect("/")
     })
+})
+
+app.get("/404", (req, res) => {
+        res.send("Not Found 404")
+})
 
 app.get('/posts', (req, res) => {
     res.send('Lista de posts')
