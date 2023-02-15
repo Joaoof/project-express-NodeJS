@@ -217,4 +217,14 @@ routes.post("/postagem/edit", (req, res) => {
     })
 })
 
+routes.get("/postagens/deletar/:id", (req, res) => {
+    Posts.remove({_id: req.params.id}).then(() => {
+        req.flash("success_msg", "Postagem deletada com sucesso!")
+        res.redirect("/admin/postagens")
+    }).catch((error) => {
+        req.flash("error_msg", "Houve um erro interno")
+        res.redirect("/admin/postagens")
+    })
+})
+
 module.exports = routes; // vou exportar as rotas
