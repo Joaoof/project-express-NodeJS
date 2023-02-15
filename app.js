@@ -16,6 +16,7 @@ require("./models/Posts")
 const Posts = mongoose.model("postagens")
 require("./models/Categoria") // A gente vai recarregar o model de categoria aqui
 const Categoria = mongoose.model("categorias")
+const usuarios = require("./routes/usuario")
 
 // * Configurações
     // Sessão
@@ -132,6 +133,7 @@ app.get("/404", (req, res) => {
 })
 
 app.use('/admin', admin) // caso eu queira acessar as rotas, devo eu colocar o prefixo 'admin'
+app.use("/usuarios", usuarios)
 
 // Outros
 const PORT = 8082 // Variavel da porta

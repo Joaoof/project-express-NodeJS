@@ -2,7 +2,7 @@
 
 const { Router } = require('express');
 const express = require('express'); // vou chamar o express.
-const routes = express.Router(); // o routes vai receber o express.Router()
+const router = express.Router(); // o routes vai receber o express.Router()
 const mongoose = require('mongoose');;
 require('../models/Categoria') // a gente vai pegar o mdel, com o Categoria dentro
 const Categoria = mongoose.model("categorias");
@@ -11,19 +11,19 @@ const Posts = mongoose.model("postagens")
 
 // Rota principal painel Admin.
 
-routes.get('/', (req, res) => {
+router.get('/', (req, res) => {
     res.render('admin/index');
 });
 
 // Rota que vai listar posts
 
-routes.get('/posts', (req, res) => {
+router.get('/posts', (req, res) => {
     res.send('Página de posts');
 });
 
 // Rota de categorias
 
-routes.get('/category', (req, res) => {
+router.get('/category', (req, res) => {
     Categoria.find().sort({date: 'desc'}).lean().then((categorias) => { // Vai listar todas as categorias existentes! 'find()'
         res.render('admin/categorias', {categorias: categorias});
     }).catch((error) => {
@@ -32,11 +32,11 @@ routes.get('/category', (req, res) => {
     });
 });
 
-routes.get('/categorias/add', (req, res) => {
+router.get('/categorias/add', (req, res) => {
     res.render('admin/addcategorias');
 });
 
-routes.post('/categorias/nova', (req, res) => {
+router.post('/categorias/nova', (req, res) => {
 
     var error = [];
 
@@ -71,7 +71,7 @@ routes.post('/categorias/nova', (req, res) => {
 
 });
 
-routes.get("/categorias/edit/:id", (req, res) => {
+router.get("/categorias/edit/:id", (req, res) => {
     Categoria.findOne({_id:req.params.id}).lean().then((categoria) => {
         res.render("admin/editcategorias", {categoria: categoria});
         // Pesquisar pelo id da categoria , ou seja para editar a categoria eu devo achar o id dela, né:? kapa kapa        
@@ -81,7 +81,7 @@ routes.get("/categorias/edit/:id", (req, res) => {
     });
 }); // Rota de edição das categorias criadas!
 
-routes.post("/categorias/edit", (req, res) => {
+router.post("/categorias/edit", (req, res) => {
     Categoria.findOne({_id: req.body.id}).then(((categoria) => {
 
         categoria.nome = req.body.nome,
@@ -103,7 +103,7 @@ routes.post("/categorias/edit", (req, res) => {
 
 })
 
-routes.post("/categorias/deletar", (req, res) => {
+router.post("/categorias/deletar", (req, res) => {
     Categoria.deleteOne({_id: req.body.id}).then(() => {
         req.flash('success_msg', 'Categoria deletada com sucesso')
         res.redirect("/admin/category")
@@ -114,7 +114,7 @@ routes.post("/categorias/deletar", (req, res) => {
 })
 })
 
-routes.get("/postagens", (req, res) => {
+router.get("/postagens", (req, res) => {
 
     Posts.find().populate("categoria").lean().sort({data: 'desc'}).then((postagens) => {
         res.render("admin/postagens", {postagens: postagens})
@@ -125,7 +125,7 @@ routes.get("/postagens", (req, res) => {
 
 })
 
-routes.get("/postagens/add", (req, res) => {
+router.get("/postagens/add", (req, res) => {
     Categoria.find().lean(true).then((categoria) => { // Vai passar todas as categorias em view. ou seja tudo!
         res.render("admin/addpostagem", {categoria: categoria})
     }).catch((error) => {
@@ -136,7 +136,7 @@ routes.get("/postagens/add", (req, res) => {
 
 // Adicionando categorias ao banco de dados
 
-routes.post("/postagens/nova", (req, res) => {
+router.post("/postagens/nova", (req, res) => {
     
 
     var error = [];
@@ -175,7 +175,7 @@ routes.post("/postagens/nova", (req, res) => {
 
 })
 
-routes.get("/postagens/edit/:id", (req, res) => {
+router.get("/postagens/edit/:id", (req, res) => {
 
     Posts.findOne({_id: req.params.id}).then((postagem) => {
 
@@ -194,7 +194,7 @@ routes.get("/postagens/edit/:id", (req, res) => {
 
 })
 
-routes.post("/postagem/edit", (req, res) => {
+router.post("/postagem/edit", (req, res) => {
     Posts.findOne({_id: req.body.id}).then((postagem) => {
 
         postagem.titulo = req.body.titulo
@@ -217,7 +217,7 @@ routes.post("/postagem/edit", (req, res) => {
     })
 })
 
-routes.get("/postagens/deletar/:id", (req, res) => {
+router.get("/postagens/deletar/:id", (req, res) => {
     Posts.remove({_id: req.params.id}).then(() => {
         req.flash("success_msg", "Postagem deletada com sucesso!")
         res.redirect("/admin/postagens")
@@ -227,4 +227,4 @@ routes.get("/postagens/deletar/:id", (req, res) => {
     })
 })
 
-module.exports = routes; // vou exportar as rotas
+module.exports = router; // vou exportar as rotas
