@@ -8,10 +8,17 @@ const Usuario = new Schema({
         type: String,
         required: true
     },
+
     email: {
         type: String,
         required: true
     },
+
+    eAdmin: { // CAMPO QUE IRÁ VERFICAR SE O USUARIO E ADM.
+        type: Number,
+        default: 0 // QUANDO O CAMPO FOR = 0 NÃO É ADM, QUANDO FOR = 1 É ADM.
+    },
+
     senha: {
         type: String,
         required: true
