@@ -16,7 +16,9 @@ require("./models/Posts")
 const Posts = mongoose.model("postagens")
 require("./models/Categoria") // A gente vai recarregar o model de categoria aqui
 const Categoria = mongoose.model("categorias")
-const usuarios = require("./routes/usuario")
+const usuarios = require("./routes/usuario");
+const passport = require('passport');
+require("./config/auth")(passport)
 
 // * Configurações
     // Sessão
@@ -26,6 +28,9 @@ const usuarios = require("./routes/usuario")
         saveUninitialized: true,
         // cookie: {secure: true}
     }))
+
+    app.use(passport.initialize())
+    app.use(passport.session())
 
     app.use(flash())
 // Middleware -- Configurando 
