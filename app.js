@@ -143,7 +143,7 @@ app.use('/admin', admin) // caso eu queira acessar as rotas, devo eu colocar o p
 app.use("/usuarios", usuarios)
 
 // Outros
-const PORT = 8082 // Variavel da porta
+const PORT = process.env.PORT || 8082 // Variavel da porta
 app.listen(PORT, () =>{
     console.log("Porta conectada")
 }) // Porta em que vou acessar meu site, vou passar também uma função de call back, onde ela vai me dizer se estou conectado a porta!

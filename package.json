@@ -1,10 +1,10 @@
 {
   "name": "blogapp",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "app.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,5 +20,16 @@
     "mongoose": "^6.9.1",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joaoof/project-express-NodeJS.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Joaoof/project-express-NodeJS/issues"
+  },
+  "homepage": "https://github.com/Joaoof/project-express-NodeJS#readme",
+  "keywords": [],
+  "description": ""
 }
