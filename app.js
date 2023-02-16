@@ -30,7 +30,7 @@ require("./config/auth")(passport)
     }))
 
     app.use(passport.initialize())
-    app.use(passport.session())
+    app.use(passport.session(   ))
 
     app.use(flash())
 // Middleware -- Configurando 
@@ -38,6 +38,7 @@ require("./config/auth")(passport)
     app.use((req, res, next) => {
         res.locals.success_msg = req.flash('success_msg') // var global - Posso acessar  em qualquer parte da minha aplicação
         res.locals.error_msg = req.flash('error_msg') // var global
+        res.locals.error = req.flash("error")
         next()
     })
 

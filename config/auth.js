@@ -11,23 +11,24 @@ const Usuario = mongoose.model("usuarios")
 
 module.exports = function(passport){
 
-  passport.use(new localStrategy({usernameField: 'email'}, (email, senha, done) => {
+  passport.use(new localStrategy({usernameField: 'email', passwordField: 'senha'}, (email, senha, done) => {
 
     Usuario.findOne({email: email}).then((usuario) => {
       if(!usuario){
         return done(null, false, {message: "Esta conta não existe"})
       }
-    }) // Ele vai pesquisar um usuário no email que foi passado qna autenticação acima
+     // Ele vai pesquisar um usuário no email que foi passado qna autenticação acima
 
     bcrypt.compare(senha, usuario.senha, (error, batem) => {
       if(batem){
-        return done(null, user)
+        return done(null, usuario)
       }else {
         return done(null, false, {message: "Senha incorreta"})
       }
 
     })  // Se a conta existir
 
+  })
 
 
   })) // Basicamente o campo que quero analisar
@@ -39,8 +40,8 @@ module.exports = function(passport){
   }) // Salvar dados do usuário em uma sessão
 
   passport.deserializeUser((id, done) => {
-    User.findById(id, (error, usuario) => { // A função findById serve para procurar um usuário pelo id dele.
-      done(error, user)
+    Usuario.findById(id, (error, usuario) => { // A função findById serve para procurar um usuário pelo id dele.
+      done(error, usuario)
 
     })
   })
