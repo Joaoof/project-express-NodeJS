@@ -33,7 +33,7 @@ require("./config/auth")(passport)
     app.use(passport.session())
 
     app.use(flash())
-// Middleware -- Configurando 
+// Middleware -- Configurando
 
     app.use((req, res, next) => {
         res.locals.success_msg = req.flash('success_msg') // var global - Posso acessar  em qualquer parte da minha aplicação
@@ -51,13 +51,13 @@ app.use(express.json())
 // Configurando Handlebars
 
 const hbs = exphbs.create({
-    defaultLayout: 'main', 
+    defaultLayout: 'main',
     extname: 'handlebars',
     handlebars: allowInsecurePrototypeAccess(Handlebars)
   });
 
 
-  app.engine('handlebars', hbs.engine); 
+  app.engine('handlebars', hbs.engine);
   app.set('view engine', 'handlebars');
   app.set('views', 'views');
 
